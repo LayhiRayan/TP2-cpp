@@ -1,92 +1,90 @@
 #include <iostream>
 #include <cmath>
-#include <string>
-#include <iomanip>
+
 using namespace std;
 
-struct Point {
+class Point
+{
     float x;
     float y;
 
-    void saisie(float a, float b) {
+public:
+    Point(float a = 0, float b = 0)
+    {
         x = a;
         y = b;
     }
 
-    // Déplacement (translation)
-    void depacer(float dx, float dy) {
-        x += dx;
-        y += dy;
+    void saisie(float a, float b)
+    {
+        x = a;
+        y = b;
     }
 
-    float abscisse() {
+    void deplacer(float a, float b)
+    {
+        x += a;
+        y += b;
+    }
+
+    float getX()
+    {
         return x;
     }
 
-    float ordonnee() {
+    float getY()
+    {
         return y;
     }
 
-    bool comparer(Point p) {
+    void setX(float a)
+    {
+        x = a;
+    }
+
+    void setY(float b)
+    {
+        y = b;
+    }
+
+    void afficher()
+    {
+        cout << "Coordonnees du point : " << endl;
+        cout << "Point(" << x << ", " << y << ")" << endl;
+    }
+
+    bool comparer(Point p)
+    {
         return (x == p.x && y == p.y);
     }
 
-    float calcule(Point p) {
-        return sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y));
-    }
-
-    string toString() {
-        return "(" + to_string(x) + ", " + to_string(y) + ")";
+    float distance(Point p)
+    {
+        return sqrt(pow(p.x - x, 2) + pow(p.y - y, 2));
     }
 };
+int main()
+{
+    Point p1(1, 5);
+    Point p2(3, 6);
 
-int main() {
-    Point p1, p2, p3;
+    p1.afficher();
+    p2.afficher();
 
-    // Création des points
-    p1.saisie(0, 0);
-    p2.saisie(3, 4);
-    p3.saisie(10, 10);
+    p1.deplacer(3, 3);
+    cout << "Apres deplacement : " << endl;
+    p1.afficher();
 
-    cout << fixed << setprecision(2);
-    cout << "Coordonnées des points :" << endl;
-    cout << "P1 = " << p1.toString() << endl;
-    cout << "P2 = " << p2.toString() << endl;
-    cout << "P3 = " << p3.toString() << endl;
-
-    Point origine;
-    origine.saisie(0, 0);
-    cout << "\nDistance de P1 à l'origine : " << p1.calcule(origine) << endl;
-
-    float d12 = p1.calcule(p2);
-    cout << "Distance entre P1 et P2 : " << d12 << endl;
-
-    p2.depacer(20, 13);
-    cout << "\nP2 après déplacement par (20, 13) : " << p2.toString() << endl;
-
-    if (p1.comparer(p3)) {
-        cout << "\nP1 et P3 sont identiques." << endl;
-    } else {
-        cout << "\nP1 et P3 sont différents." << endl;
+    if (p1.comparer(p2))
+    {
+        cout << "P1 et P2 sont au meme emplacement." << endl;
+    }
+    else
+    {
+        cout <<  "P1 et P2 sont ï¿½ des positions differentes." << endl;
     }
 
-    // Trouver les deux points les plus proches
-    float d13 = p1.calcule(p3);
-    float d23 = p2.calcule(p3);
-
-    float minDist = d12;
-    string paire = "P1 et P2";
-
-    if (d13 < minDist) {
-        minDist = d13;
-        paire = "P1 et P3";
-    }
-    if (d23 < minDist) {
-        minDist = d23;
-        paire = "P2 et P3";
-    }
-
-    cout << "\nLes deux points les plus proches sont " << paire << " avec une distance de " << minDist << endl;
+    cout << "Distance entre P1 et P2 : " << p1.distance(p2) << endl;
 
     return 0;
 }
